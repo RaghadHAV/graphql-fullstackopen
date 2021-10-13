@@ -1,4 +1,5 @@
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServerPluginCacheControl } = require('apollo-server-core');
 
 let authors = [
   {
@@ -157,7 +158,6 @@ const resolvers = {
     allAuthors: () => {
       // O(n*m)
       // O(n+m)
-
       // map: author => bookCount
       let map = new Map();
       for (let j = 0; j < books.length; j++) {
@@ -170,9 +170,8 @@ const resolvers = {
           map.set(author, 1);
         }
       }
-
       for (let i = 0; i < authors.length; i++) {
-        const count = map.get(books[i].author);
+        const count = map.get(authors[i].name);
         authors[i].bookCount = (count) ? count : 0;
       }
 
