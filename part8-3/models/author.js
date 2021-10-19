@@ -10,8 +10,15 @@ const schema = new mongoose.Schema({
     },
     born: {
         type: Number,
-    }
+    },
+    books: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Book'
+    }],
+
 })
 
+// command to add book object ids to authors
+//db.books.aggregate([{$group:{_id:"$author", books:{$push:"$_id"}}}, {$merge:{into:"authors", on:"_id"}}]
 schema.plugin(uniqueValidator)
 module.exports = mongoose.model('Author', schema)

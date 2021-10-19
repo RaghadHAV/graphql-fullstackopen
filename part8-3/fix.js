@@ -9,22 +9,16 @@ mongoose.connect(MONGODB_URI)
     .then(async () => {
         console.log('connected to MongoDB')
 
-        const allBooks = await Book.find({});
+        const allBooks = await Book.find({})
+        //console.log(allBooks);
         
         for (let i = 0; i < allBooks.length; i++) {
             const author = await Author.findOne({ name: allBooks[i].author });
-            const newBook = new Book({...allBooks[i]})
-            // const newBook = new Book({ 
-            //     title: allBooks[i].title,
-            //     author: author._id,
-            //     published: allBooks[i].published,
-            //     genres: allBooks[i].genres,
-            //     _id: allBooks[i]._id
-            // });
-            console.log(newBook);
-            await newBook.save();
+            allBooks[i].author = author._id;
+            await allBooks[i].save();
         }
-        console.log(allBooks);
+
+      mongoose.connection.close();
         
         // return data from db to an
         // loop to every author, author 
